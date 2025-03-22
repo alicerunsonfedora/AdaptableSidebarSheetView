@@ -26,7 +26,7 @@ import SwiftUI
     /// }
     /// ```
     @available(iOS 18.0, *)
-    public struct AdaptableSidebarSheetView<Content: View, Sheet: View>: View {
+    public struct AdaptableSidebarSheet<Content: View, Sheet: View>: View {
         @Binding private var sheetDisplayed: Bool
         @State private var sheetDisplayedInternally = false
 
@@ -47,7 +47,7 @@ import SwiftUI
         /// - Parameter content: The view content that appears as the "background" or main content, that the sidebar sheet
         ///   sits on top of.
         /// - Parameter sheet: The view content that appears as the sidebar sheet.
-        init(
+        public init(
             preferredSidebarWidthFraction: Double = 0.317,
             content: @escaping () -> Content,
             sheet: @escaping () -> Sheet
@@ -67,7 +67,7 @@ import SwiftUI
         /// - Parameter content: The view content that appears as the "background" or main content, that the sidebar sheet
         ///   sits on top of.
         /// - Parameter sheet: The view content that appears as the sidebar sheet.
-        init(
+        public init(
             isPresented: Binding<Bool>,
             preferredSidebarWidthFraction: Double = 0.317,
             content: @escaping () -> Content,
@@ -79,7 +79,7 @@ import SwiftUI
             self.sheet = sheet
         }
 
-        var body: some View {
+        public var body: some View {
             AdaptableSidebarSheetInternalView(
                 sheetDisplayed: $sheetDisplayed,
                 preferredSidebarWidthFraction: preferredSidebarWidthFraction,
@@ -89,7 +89,7 @@ import SwiftUI
         }
     }
 
-    private struct AdaptableSidebarSheetInternalView<Content: View, Sheet: View>: View {
+    struct AdaptableSidebarSheetInternalView<Content: View, Sheet: View>: View {
         enum Breakpoint {
             case small, medium, large
         }
@@ -207,15 +207,14 @@ import SwiftUI
         }
     }
 
-    #if DEBUG
-        extension AdaptableSidebarSheetView {
+        extension AdaptableSidebarSheet {
             var testHooks: TestHooks { TestHooks(target: self) }
 
             @MainActor
             struct TestHooks {
-                private let target: AdaptableSidebarSheetView
+                private let target: AdaptableSidebarSheet
 
-                fileprivate init(target: AdaptableSidebarSheetView) {
+                fileprivate init(target: AdaptableSidebarSheet) {
                     self.target = target
                 }
 
@@ -236,5 +235,4 @@ import SwiftUI
                 }
             }
         }
-    #endif
 #endif

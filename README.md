@@ -1,4 +1,4 @@
-# Adaptable Sidebar Sheet View
+# Adaptable Sidebar Sheet
 
 Display a sheet that can be displayed as a sidebar on iPad in SwiftUI.
 
@@ -22,7 +22,7 @@ dependencies: [
 ### Using the package
 
 To display this view in your SwiftUI project, import the package and add
-an `AdaptableSidebarSheetView`:
+an `AdaptableSidebarSheet`:
 
 ```swift
 import AdaptableSidebarSheetView
@@ -30,7 +30,7 @@ import SwiftUI
 
 struct MyView: View {
     var body: some View {
-        AdaptableSidebarSheetView {
+        AdaptableSidebarSheet {
             mainContent
         } sheet: {
             sheet

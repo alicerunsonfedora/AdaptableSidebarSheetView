@@ -13,7 +13,7 @@ struct AdaptableSidebarSheetViewTests {
         let sheet = {
             return Text("Foreground!")
         }
-        let view = AdaptableSidebarSheetView(content: content, sheet: sheet)
+        let view = AdaptableSidebarSheet(content: content, sheet: sheet)
         let hooks = view.testHooks
 
         #expect(hooks.sheetDisplayedInternally == false)
@@ -32,7 +32,7 @@ struct AdaptableSidebarSheetViewTests {
         let sheet = {
             return Text("Foreground!")
         }
-        let view = AdaptableSidebarSheetView(isPresented: isPresented, content: content, sheet: sheet)
+        let view = AdaptableSidebarSheet(isPresented: isPresented, content: content, sheet: sheet)
         let hooks = view.testHooks
 
         #expect(hooks.sheetDisplayedInternally == isPresented.wrappedValue)
