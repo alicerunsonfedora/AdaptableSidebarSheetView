@@ -26,7 +26,7 @@ import SwiftUI
     /// }
     /// ```
     @available(iOS 18.0, *)
-    struct AdaptableSidebarSheetView<Content: View, Sheet: View>: View {
+    public struct AdaptableSidebarSheetView<Content: View, Sheet: View>: View {
         @Binding private var sheetDisplayed: Bool
         @State private var sheetDisplayedInternally = false
 
