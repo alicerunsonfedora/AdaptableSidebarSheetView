@@ -18,7 +18,7 @@ import SwiftUI
     /// adjusted if `presentationDetents` are defined on the view that is displayed as a sheet:
     ///
     /// ```swift
-    /// AdaptableSidebarSheetView {
+    /// AdaptableSidebarSheet {
     ///     MainView()
     /// } sheet: {
     ///     MySheet()
@@ -33,13 +33,13 @@ import SwiftUI
         /// The preferred width fraction for the sidebar when it is presented as a sidebar.
         ///
         /// - SeeAlso: This should be treated like `UISplitViewController.preferredPrimaryColumnWidthFraction`.
-        var preferredSidebarWidthFraction = 0.317
+        public var preferredSidebarWidthFraction = 0.317
 
         /// The view content that appears as the "background" or main content, that the sidebar sheet sits on top of.
-        var content: () -> Content
+        public var content: () -> Content
 
         /// The view content that appears as the sidebar sheet.
-        var sheet: () -> Sheet
+        public var sheet: () -> Sheet
 
         /// Creates an adaptable sidebar sheet that manages its own presentation.
         /// - Parameter preferredSidebarWidthFraction: The preferred width fraction for the sidebar when it is presented as
