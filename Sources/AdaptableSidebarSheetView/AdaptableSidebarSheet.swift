@@ -207,52 +207,52 @@ import SwiftUI
         }
     }
 
-        extension AdaptableSidebarSheet {
-            var testHooks: TestHooks { TestHooks(target: self) }
+    extension AdaptableSidebarSheet {
+        var testHooks: TestHooks { TestHooks(target: self) }
 
-            @MainActor
-            struct TestHooks {
-                private let target: AdaptableSidebarSheet
+        @MainActor
+        struct TestHooks {
+            private let target: AdaptableSidebarSheet
 
-                fileprivate init(target: AdaptableSidebarSheet) {
-                    self.target = target
-                }
+            fileprivate init(target: AdaptableSidebarSheet) {
+                self.target = target
+            }
 
-                var sheetDisplayedInternally: Bool {
-                    target.sheetDisplayedInternally
-                }
+            var sheetDisplayedInternally: Bool {
+                target.sheetDisplayedInternally
+            }
 
-                var preferredSidebarWidthFraction: Double {
-                    target.preferredSidebarWidthFraction
-                }
+            var preferredSidebarWidthFraction: Double {
+                target.preferredSidebarWidthFraction
+            }
 
-                var content: () -> Content {
-                    target.content
-                }
+            var content: () -> Content {
+                target.content
+            }
 
-                var sheet: () -> Sheet {
-                    target.sheet
-                }
+            var sheet: () -> Sheet {
+                target.sheet
             }
         }
-#endif
-
-#Preview {
-    AdaptableSidebarSheet {
-        Color.blue
-            .edgesIgnoringSafeArea(.all)
-    } sheet: {
-        NavigationStack {
-            Text("Hello, world!")
-                .navigationTitle("Sample")
-                .toolbar {
-                    Button("Hi!") {
-                        
-                    }
-                }
-        }
-        .presentationDetents([.fraction(0.1), .medium, .large])
-        .presentationBackgroundInteraction(.enabled)
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-}
+
+    #Preview {
+        AdaptableSidebarSheet {
+            Color.blue
+                .edgesIgnoringSafeArea(.all)
+        } sheet: {
+            NavigationStack {
+                Text("Hello, world!")
+                    .navigationTitle("Sample")
+                    .toolbar {
+                        Button("Hi!") {
+
+                        }
+                    }
+            }
+            .presentationDetents([.fraction(0.1), .medium, .large])
+            .presentationBackgroundInteraction(.enabled)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+#endif
