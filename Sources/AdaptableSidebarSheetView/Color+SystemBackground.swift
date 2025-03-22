@@ -7,9 +7,9 @@
 
 import SwiftUI
 
+#if os(iOS)
 extension Color {
-    #if os(iOS)
     /// A color that corresponds to the system background (`UIColor.systemBackground`).
     static let systemBackground: Color = Color(uiColor: .systemBackground)
-    #endif
 }
+#endif
