@@ -21,6 +21,10 @@ struct MyView: View {
 }
 ```
 
+> Important: Ensure that your view will scale to fit the area for the
+> sidebar. Views like `NavigationStack` are automatically handled, but
+> custom views may need frame adjustments.
+
 ### Controlling presentation
 
 The sidebar sheet can handle presentation automatically based on the

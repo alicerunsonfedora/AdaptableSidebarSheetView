@@ -172,7 +172,7 @@ import SwiftUI
                             sheet()
                                 .frame(maxHeight: height(relativeTo: proxy))
                             Capsule()
-                                .fill(.selection)
+                                .fill(.secondary.opacity(0.5))
                                 .frame(width: 64, height: 8)
                                 .gesture(dragGesture)
                         }
@@ -236,3 +236,23 @@ import SwiftUI
             }
         }
 #endif
+
+#Preview {
+    AdaptableSidebarSheet {
+        Color.blue
+            .edgesIgnoringSafeArea(.all)
+    } sheet: {
+        NavigationStack {
+            Text("Hello, world!")
+                .navigationTitle("Sample")
+                .toolbar {
+                    Button("Hi!") {
+                        
+                    }
+                }
+        }
+        .presentationDetents([.fraction(0.1), .medium, .large])
+        .presentationBackgroundInteraction(.enabled)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+}
