@@ -156,8 +156,10 @@ import SwiftUI
             .onAppear {
                 sheetDisplayed = horizontalSizeClass == .compact
             }
-            .onChange(of: horizontalSizeClass) { _, newValue in
-                sheetDisplayed = newValue == .compact
+            .onChange(of: horizontalSizeClass) { oldValue, newValue in
+                if oldValue != newValue {
+                    sheetDisplayed = newValue == .compact
+                }
             }
             .onDisappear {
                 sheetDisplayed = false
@@ -241,7 +243,8 @@ import SwiftUI
     }
 
     #Preview {
-        AdaptableSidebarSheet {
+        @Previewable @State var isDisplayed = false
+        AdaptableSidebarSheet(isPresented: $isDisplayed) {
             Color.blue
                 .edgesIgnoringSafeArea(.all)
         } sheet: {
