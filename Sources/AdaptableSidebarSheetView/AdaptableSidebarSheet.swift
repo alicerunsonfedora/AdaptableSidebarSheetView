@@ -148,20 +148,25 @@ import SwiftUI
         var body: some View {
             Group {
                 if horizontalSizeClass == .compact {
+                    // NOTE: Xcode 16.3/iOS 18.4 somehow broke the detection code for displaying a sheet conditionally
+                    // in the manner we want. So, we can always assume that this sheet will be forever presented when
+                    // in compact mode. Not ideal, as it means that the developer doesn't have any general control over
+                    // the presentation, but better than nothing. Fuckin' stupid...
                     content()
+                        .sheet(isPresented: .constant(true)) {
+                            sheet()
+                        }
                 } else {
                     sidebarLayout
                 }
             }
-            .onAppear {
-                sheetDisplayed = horizontalSizeClass == .compact
-            }
+//            .onAppear {
+//                sheetDisplayed = horizontalSizeClass == .compact
+//            }
             .onChange(of: horizontalSizeClass) { _, newValue in
                 sheetDisplayed = newValue == .compact
             }
-            .sheet(isPresented: $sheetDisplayed) {
-                sheet()
-            }
+
         }
 
         private var sidebarLayout: some View {
