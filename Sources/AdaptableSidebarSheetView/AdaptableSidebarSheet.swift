@@ -93,7 +93,7 @@ import SwiftUI
         enum Breakpoint {
             case small, medium, large
         }
-        @State private var currentBreakpoint = Breakpoint.large
+        @State private var currentBreakpoint = Breakpoint.small
         @State private var eligibleToResize = true
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
         @Binding var sheetDisplayed: Bool
