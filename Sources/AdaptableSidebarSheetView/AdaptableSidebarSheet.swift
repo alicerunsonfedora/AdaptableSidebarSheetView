@@ -159,6 +159,9 @@ import SwiftUI
             .onChange(of: horizontalSizeClass) { _, newValue in
                 sheetDisplayed = newValue == .compact
             }
+            .onDisappear {
+                sheetDisplayed = false
+            }
             .sheet(isPresented: $sheetDisplayed) {
                 sheet()
             }
