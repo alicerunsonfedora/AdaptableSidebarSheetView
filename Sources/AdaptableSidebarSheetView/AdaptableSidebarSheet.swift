@@ -107,11 +107,23 @@ import SwiftUI
             let shorthandMax = 48.0
             let longhandMin = 128.0
             let longhandMax = 256.0
+    
+            let positiveShorthand: ClosedRange<CGFloat>
+            let negativeShorthand: ClosedRange<CGFloat>
+            let positiveLonghand: ClosedRange<CGFloat>
+            let negativeLonghand: ClosedRange<CGFloat>
 
-            let positiveShorthand = shorthandMin...shorthandMax
-            let negativeShorthand = -shorthandMax ... -shorthandMin
-            let positiveLonghand = longhandMin...longhandMax
-            let negativeLonghand = -longhandMax ... -longhandMin
+            if horizontalSizeClass == .regular {
+                positiveShorthand = shorthandMin...shorthandMax
+                negativeShorthand = -shorthandMax ... -shorthandMin
+                positiveLonghand = longhandMin ... longhandMax
+                negativeLonghand = -longhandMax ... -longhandMin
+            } else {
+                positiveShorthand = -shorthandMax ... -shorthandMin
+                negativeShorthand = shorthandMin ... shorthandMax
+                positiveLonghand = -longhandMax ... -longhandMin
+                negativeLonghand = longhandMin ... longhandMax
+            }
 
             return DragGesture(minimumDistance: shorthandMin / 2)
                 .onChanged { value in
@@ -147,10 +159,13 @@ import SwiftUI
 
         var body: some View {
             Group {
-                if horizontalSizeClass == .compact {
-                    content()
-                } else {
+                switch (horizontalSizeClass, sheetDisplayed) {
+                case (.compact, true):
+                    sheetLayout
+                case (.regular, _):
                     sidebarLayout
+                default:
+                    content()
                 }
             }
             .task {
@@ -176,10 +191,6 @@ import SwiftUI
             .onDisappear {
                 sheetDisplayed = false
             }
-            .sheet(isPresented: $sheetDisplayed) {
-                sheet()
-            }
-
         }
 
         private var sidebarLayout: some View {
@@ -209,6 +220,38 @@ import SwiftUI
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .background {
                     content()
+                }
+            }
+        }
+
+        private var sheetLayout: some View {
+            GeometryReader { proxy in
+                VStack {
+                    Spacer()
+                    VStack {
+                        Capsule()
+                            .fill(.secondary.opacity(0.5))
+                            .frame(width: 48, height: 8)
+                            .gesture(dragGesture)
+                        sheet()
+                            .frame(maxHeight: height(relativeTo: proxy))
+                    }
+                    .padding(.vertical)
+                    #if os(iOS)
+                    .background(Color.systemBackground)
+                    #endif
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .shadow(radius: 2)
+                .ignoresSafeArea(edges: .bottom)
+                .background {
+                    ZStack {
+                        content()
+                        if currentBreakpoint == .large {
+                            Color.black.opacity(0.5)
+                                .ignoresSafeArea()
+                        }
+                    }
                 }
             }
         }
