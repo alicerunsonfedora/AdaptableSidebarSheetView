@@ -153,12 +153,24 @@ import SwiftUI
                     sidebarLayout
                 }
             }
-            .onAppear {
-                sheetDisplayed = horizontalSizeClass == .compact
+            .task {
+                do {
+                    try await Task.sleep(for: .seconds(1))
+                    sheetDisplayed = horizontalSizeClass == .compact
+                } catch {
+                    print("Failed to wait.")
+                }
             }
             .onChange(of: horizontalSizeClass) { oldValue, newValue in
                 if oldValue != newValue {
-                    sheetDisplayed = newValue == .compact
+                    Task {
+                        do {
+                            try await Task.sleep(for: .seconds(1))
+                            sheetDisplayed = newValue == .compact
+                        } catch {
+                            print("Failed to wait.")
+                        }
+                    }
                 }
             }
             .onDisappear {
