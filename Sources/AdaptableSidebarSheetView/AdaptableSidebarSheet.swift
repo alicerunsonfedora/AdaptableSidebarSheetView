@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+public enum AdaptableSidebarSheetBreakpoint {
+    case small, medium, large
+}
+
 #if os(iOS)
     /// A view that displays content as a sidebar or as a sheet based on the device's horizontal size class.
     ///
@@ -28,7 +32,9 @@ import SwiftUI
     @available(iOS 18.0, *)
     public struct AdaptableSidebarSheet<Content: View, Sheet: View>: View {
         @Binding private var sheetDisplayed: Bool
+        @Binding private var currentPresentationDetent: AdaptableSidebarSheetBreakpoint
         @State private var sheetDisplayedInternally = false
+        @State private var internalPresentationDetent = AdaptableSidebarSheetBreakpoint.small
 
         /// The preferred width fraction for the sidebar when it is presented as a sidebar.
         ///
@@ -54,10 +60,12 @@ import SwiftUI
         ) {
             self.sheetDisplayedInternally = false
             self._sheetDisplayed = .init(projectedValue: .constant(false))
+            self._currentPresentationDetent = .init(projectedValue: .constant(.small))
             self.preferredSidebarWidthFraction = preferredSidebarWidthFraction
             self.content = content
             self.sheet = sheet
             self._sheetDisplayed = $sheetDisplayedInternally
+            self._currentPresentationDetent = $internalPresentationDetent
         }
 
         /// Creates an adaptable sidebar sheet where presentation is managed externally.
@@ -69,11 +77,13 @@ import SwiftUI
         /// - Parameter sheet: The view content that appears as the sidebar sheet.
         public init(
             isPresented: Binding<Bool>,
+            currentPresentationDetent: Binding<AdaptableSidebarSheetBreakpoint>,
             preferredSidebarWidthFraction: Double = 0.317,
             content: @escaping () -> Content,
             sheet: @escaping () -> Sheet
         ) {
             self._sheetDisplayed = isPresented
+            self._currentPresentationDetent = currentPresentationDetent
             self.preferredSidebarWidthFraction = preferredSidebarWidthFraction
             self.content = content
             self.sheet = sheet
@@ -81,6 +91,7 @@ import SwiftUI
 
         public var body: some View {
             AdaptableSidebarSheetInternalView(
+                currentBreakpoint: $currentPresentationDetent,
                 sheetDisplayed: $sheetDisplayed,
                 preferredSidebarWidthFraction: preferredSidebarWidthFraction,
                 content: content,
@@ -90,12 +101,10 @@ import SwiftUI
     }
 
     struct AdaptableSidebarSheetInternalView<Content: View, Sheet: View>: View {
-        enum Breakpoint {
-            case small, medium, large
-        }
-        @State private var currentBreakpoint = Breakpoint.small
         @State private var eligibleToResize = true
         @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+        @Binding var currentBreakpoint: AdaptableSidebarSheetBreakpoint
         @Binding var sheetDisplayed: Bool
 
         var preferredSidebarWidthFraction: CGFloat
@@ -299,7 +308,8 @@ import SwiftUI
 
     #Preview {
         @Previewable @State var isDisplayed = false
-        AdaptableSidebarSheet(isPresented: $isDisplayed) {
+        @Previewable @State var detent = AdaptableSidebarSheetBreakpoint.small
+        AdaptableSidebarSheet(isPresented: $isDisplayed, currentPresentationDetent: $detent) {
             Color.blue
                 .edgesIgnoringSafeArea(.all)
         } sheet: {

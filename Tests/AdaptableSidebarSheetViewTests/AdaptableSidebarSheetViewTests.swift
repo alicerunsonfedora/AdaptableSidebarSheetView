@@ -26,13 +26,19 @@ struct AdaptableSidebarSheetViewTests {
 
     @Test func viewInitializeWithBinding() throws {
         let isPresented = Binding<Bool>(wrappedValue: false)
+        let detent = Binding<AdaptableSidebarSheetBreakpoint>(wrappedValue: .small)
         let content = {
             return Text("Background!")
         }
         let sheet = {
             return Text("Foreground!")
         }
-        let view = AdaptableSidebarSheet(isPresented: isPresented, content: content, sheet: sheet)
+        let view = AdaptableSidebarSheet(
+            isPresented: isPresented,
+            currentPresentationDetent: detent,
+            content: content,
+            sheet: sheet
+        )
         let hooks = view.testHooks
 
         #expect(hooks.sheetDisplayedInternally == isPresented.wrappedValue)
